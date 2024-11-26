@@ -150,8 +150,7 @@ function validateNumberInput(input) {
 };
 
 function getCommonElements(arr1, arr2) {
-  const commonNumbers = arr1.filter(number => arr2.includes(number));
-  return commonNumbers
+  return arr1.filter(number => arr2.includes(number));
 }
 
 function showResults(correctArray) {
