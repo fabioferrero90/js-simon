@@ -13,7 +13,11 @@ const elements = {
   // BOTTONE SUBMIT
   submitButton: document.getElementById('submitButton'),
 
+  // LOADER
   loader: document.getElementById('loader-wrapper'),
+
+  // GIOCA DI NUOVO
+  playAgain: document.querySelector('#resultsElement > button')
 }
 
 // Aggiungo la funzionalità al tasto che avvia il gioco
@@ -44,10 +48,18 @@ elements.submitButton.addEventListener("click", () => {
     elements.gameElement.classList.add("d-none")
     simulateLoading();
     showResults(correctNumbers)
+    for (const i in inputs) {
+      inputs[i].value = '';
+    }
   } else {
     alert("Devi inserire cinque numeri per continuare!");
     numberComparison.splice(0, arr.length);
   }
+})
+
+elements.playAgain.addEventListener("click", () => {
+  elements.resultsElement.classList.add('d-none');
+  elements.playButton.classList.remove('d-none');
 })
 
 
@@ -66,6 +78,8 @@ function startCountdown() {
       setTimeout(() => {
         elements.countdownElement.classList.add("d-none");
         startGame()
+        elements.countdownElement.innerText = 5;
+        elements.countdownElement.style.color = "white";
       }, 1000)
     }
   }, 1000);
@@ -117,6 +131,7 @@ function startGame() {
       windowElements.number3.innerText = "";
       windowElements.number4.innerText = "";
       windowElements.number5.innerText = "";
+      windowElements.timeLeft.innerText = 10;
     }
   }, 1000)
 }
@@ -148,7 +163,13 @@ function showResults(correctArray) {
   if (howMany > 0) {
     resultText.style.color = '#c7ff82';
     resultText.innerText = `Hai indovinato ${howMany} numeri!`;
-
+    if (howMany == 1) {
+      resultText.innerText = `Hai indovinato ${howMany} numero!`;
+    } else if (howMany == 5) {
+      setTimeout(starEffect, 2000)
+    } else {
+      setTimeout(confettiEffect, 2000)
+    }
     // Visualizzo i numeri indovinati creando un elemento div per ognuno
     const resultContainer = document.getElementById('resultContainer');
     for (let i = 0; i < howMany; i++) {
@@ -157,7 +178,6 @@ function showResults(correctArray) {
       numberBox.innerText = correctArray[i];
       resultContainer.appendChild(numberBox);
     }
-
   } else {
     resultText.style.color = '#ff7381';
     resultText.innerText = `Non hai indovinato nessun numero!`;
@@ -171,4 +191,73 @@ function simulateLoading() {
 function toggleLoaderVisibility(isLoading) {
   elements.loader.classList.toggle('d-none', !isLoading);
   elements.resultsElement.classList.toggle('d-none', isLoading);
+}
+
+function starEffect() {
+  const defaults = {
+    spread: 360,
+    ticks: 50,
+    gravity: 0,
+    decay: 0.94,
+    startVelocity: 30,
+    colors: ['FFE400', 'FFBD00', 'E89400', 'FFCA6C', 'FDFFB8']
+  };
+
+  function shoot() {
+    confetti({
+      ...defaults,
+      particleCount: 40,
+      scalar: 1.2,
+      shapes: ['star']
+    });
+
+    confetti({
+      ...defaults,
+      particleCount: 10,
+      scalar: 0.75,
+      shapes: ['circle']
+    });
+  }
+
+  setTimeout(shoot, 0);
+  setTimeout(shoot, 100);
+  setTimeout(shoot, 200);
+}
+
+function confettiEffect() {
+  const count = 200;
+  const defaults = {
+    origin: { y: 0.7 }
+  };
+
+  function fire(particleRatio, opts) {
+    confetti({
+      ...defaults,
+      ...opts,
+      particleCount: Math.floor(count * particleRatio)
+    });
+  }
+
+  fire(0.25, {
+    spread: 26,
+    startVelocity: 55,
+  });
+  fire(0.2, {
+    spread: 60,
+  });
+  fire(0.35, {
+    spread: 100,
+    decay: 0.91,
+    scalar: 0.8
+  });
+  fire(0.1, {
+    spread: 120,
+    startVelocity: 25,
+    decay: 0.92,
+    scalar: 1.2
+  });
+  fire(0.1, {
+    spread: 120,
+    startVelocity: 45,
+  });
 }
