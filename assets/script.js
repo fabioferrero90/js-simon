@@ -1,4 +1,4 @@
-// Definisco le variabili
+// Definisco la variabile che deve contenere i numeri estratti
 const numbers = [];
 
 // Raccolgo gli elementi in un oggetto

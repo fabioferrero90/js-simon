@@ -20,7 +20,7 @@ function startCountdown() {
   }, 1000);
 }
 
-// Funzion che avvia il gioco
+// Funzione che avvia il gioco
 function startGame() {
   const windowElements = {
     // CONTATORE 10 SECONDI
