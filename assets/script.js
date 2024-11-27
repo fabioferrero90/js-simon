@@ -28,7 +28,7 @@ elements.playButton.addEventListener("click", () => {
 
 elements.submitButton.addEventListener("click", () => {
   const numberComparison = [];
-  const inputs = {
+  let inputs = {
     // NUMERI INPUT
     inputNumber1: document.querySelector('#gameElement input:nth-child(1)'),
     inputNumber2: document.querySelector('#gameElement input:nth-child(2)'),
@@ -44,7 +44,7 @@ elements.submitButton.addEventListener("click", () => {
   }
 
   if (numberComparison.length == 5) {
-    const correctNumbers = getCommonElements(numberComparison, numbers);
+    let correctNumbers = getCommonElements(numberComparison, numbers);
     elements.gameElement.classList.add("d-none")
     simulateLoading();
     showResults(correctNumbers)
@@ -53,13 +53,15 @@ elements.submitButton.addEventListener("click", () => {
     }
   } else {
     alert("Devi inserire cinque numeri per continuare!");
-    numberComparison.splice(0, arr.length);
+    numberComparison.splice(0, numberComparison.length);
   }
 })
 
 elements.playAgain.addEventListener("click", () => {
   elements.resultsElement.classList.add('d-none');
   elements.playButton.classList.remove('d-none');
+  numbers.splice(0, numbers.length);
+  removeNumberBoxes()
 })
 
 
@@ -180,6 +182,13 @@ function showResults(correctArray) {
   } else {
     resultText.style.color = '#ff7381';
     resultText.innerText = `Non hai indovinato nessun numero!`;
+  }
+}
+
+function removeNumberBoxes() {
+  const resultContainer = document.getElementById('resultContainer');
+  while (resultContainer.firstChild) {
+    resultContainer.removeChild(resultContainer.firstChild);
   }
 }
 
